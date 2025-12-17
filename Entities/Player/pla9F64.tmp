@@ -1,0 +1,83 @@
+[gd_scene load_steps=15 format=3 uid="uid://cd5le1v57c30r"]
+
+[ext_resource type="Script" path="res://Entities/Player/Scripts/collisionScript.gd" id="1_h3dvg"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="1_v7mbb"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_1ym5p"]
+[ext_resource type="PackedScene" uid="uid://bj1aas6kty3qx" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_physics_tac_glove_low.tscn" id="3_dnfyn"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_qsoh7"]
+[ext_resource type="PackedScene" uid="uid://c2uvwvdlsfuep" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_physics_tac_glove_low.tscn" id="5_wcfh6"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_kh7mg"]
+[ext_resource type="Script" path="res://Entities/Player/Scripts/hpbar.gd" id="6_ypaab"]
+[ext_resource type="Script" path="res://Entities/Player/Scripts/manabar.gd" id="7_e8i6j"]
+
+[sub_resource type="Gradient" id="Gradient_ya72f"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q3mf3"]
+gradient = SubResource("Gradient_ya72f")
+width = 10
+height = 1
+metadata/_snap_enabled = true
+metadata/_snap_count = 2
+
+[sub_resource type="Gradient" id="Gradient_8qsk5"]
+colors = PackedColorArray(0, 0, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1slp5"]
+gradient = SubResource("Gradient_8qsk5")
+width = 10
+height = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rdg41"]
+radius = 0.2
+height = 1.25
+
+[node name="Player" type="XROrigin3D"]
+script = ExtResource("1_h3dvg")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftHand" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
+tracker = &"left_hand"
+
+[node name="FunctionPickup" parent="LeftHand" instance=ExtResource("1_v7mbb")]
+
+[node name="MovementDirect" parent="LeftHand" instance=ExtResource("2_1ym5p")]
+max_speed = 10.0
+
+[node name="LeftPhysicsHand" parent="LeftHand" instance=ExtResource("3_dnfyn")]
+
+[node name="RightHand" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="MovementTurn" parent="RightHand" instance=ExtResource("4_qsoh7")]
+turn_mode = 1
+step_turn_angle = 45.0
+
+[node name="RightPhysicsHand" parent="RightHand" instance=ExtResource("5_wcfh6")]
+
+[node name="FunctionPickup" parent="RightHand" instance=ExtResource("1_v7mbb")]
+
+[node name="HPBar" type="Sprite3D" parent="RightHand"]
+transform = Transform3D(0.126286, 0, 0.991994, 0, 1, 0, -0.991994, 0, 0.126286, 0.046626, -0.0296079, 0.226963)
+texture = SubResource("GradientTexture2D_q3mf3")
+script = ExtResource("6_ypaab")
+
+[node name="ManaBar" type="Sprite3D" parent="RightHand"]
+transform = Transform3D(0.127065, 0, 0.991894, 0, 1, 0, -0.991894, 0, 0.127065, 0.047, -0.0539044, 0.227)
+texture = SubResource("GradientTexture2D_1slp5")
+script = ExtResource("7_e8i6j")
+
+[node name="PlayerBody" parent="." instance=ExtResource("6_kh7mg")]
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.791252, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_rdg41")
+
+[connection signal="hit_by_ennemy" from="." to="RightHand/HPBar" method="_on_player_hit_by_ennemy"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

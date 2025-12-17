@@ -1,0 +1,156 @@
+[gd_scene load_steps=21 format=3 uid="uid://c717orbdilke3"]
+
+[ext_resource type="Script" path="res://Entities/Player/Scripts/player.gd" id="1_h3dvg"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="1_v7mbb"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_1ym5p"]
+[ext_resource type="PackedScene" uid="uid://bj1aas6kty3qx" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_physics_tac_glove_low.tscn" id="3_dnfyn"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="4_qsoh7"]
+[ext_resource type="PackedScene" uid="uid://bxm1ply47vaan" path="res://addons/godot-xr-tools/functions/movement_climb.tscn" id="5_ap4jk"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="5_if4xl"]
+[ext_resource type="PackedScene" uid="uid://c2uvwvdlsfuep" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_physics_tac_glove_low.tscn" id="5_wcfh6"]
+[ext_resource type="PackedScene" uid="uid://cr3f307xa3bfq" path="res://UI/Scenes/in_game_ui.tscn" id="6_28e5p"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_kh7mg"]
+[ext_resource type="Script" path="res://Entities/Player/Scripts/hpbar.gd" id="6_ypaab"]
+[ext_resource type="Script" path="res://Entities/Player/Scripts/manabar.gd" id="7_e8i6j"]
+[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="9_bkp5h"]
+[ext_resource type="AudioStream" uid="uid://b4img0aobhu8e" path="res://Sounds/footsteps.mp3" id="14_ukggx"]
+[ext_resource type="PackedScene" uid="uid://ryiwkyu8bn1n" path="res://Entities/Player/Scenes/belt_snap_zone.tscn" id="15_77rdj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rdg41"]
+radius = 0.38998
+height = 2.39309
+
+[sub_resource type="Gradient" id="Gradient_ya72f"]
+interpolation_mode = 1
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q3mf3"]
+gradient = SubResource("Gradient_ya72f")
+width = 10
+height = 1
+fill_to = Vector2(1, 0.12931)
+metadata/_snap_count = 100
+
+[sub_resource type="Gradient" id="Gradient_8qsk5"]
+interpolation_mode = 1
+colors = PackedColorArray(0, 0, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1slp5"]
+gradient = SubResource("Gradient_8qsk5")
+width = 10
+height = 1
+fill_to = Vector2(1, 0.0862069)
+
+[node name="Player" type="XROrigin3D"]
+script = ExtResource("1_h3dvg")
+hpMax = 100
+manaMax = 100
+
+[node name="PlayerBody" parent="." instance=ExtResource("6_kh7mg")]
+collision_mask = 11
+
+[node name="BeltSnapZone" parent="PlayerBody" instance=ExtResource("15_77rdj")]
+transform = Transform3D(1, 0, 0, 0, -0.707107, -0.707107, 0, 0.707107, -0.707107, 0.3, 0.8, 0)
+
+[node name="BeltSnapZone2" parent="PlayerBody" instance=ExtResource("15_77rdj")]
+transform = Transform3D(-1, 8.74228e-08, 0, -6.18172e-08, -0.707107, 0.707107, 6.18172e-08, 0.707107, 0.707107, -0.3, 0.8, 0)
+
+[node name="BackSnapZone1" parent="PlayerBody" instance=ExtResource("15_77rdj")]
+transform = Transform3D(1.05529e-07, -0.707107, -0.707107, 6.18172e-08, -0.707107, 0.707107, -1, -1.18331e-07, -3.09086e-08, 0.3, 1.6, 0.2)
+
+[node name="BackSnapZone2" parent="PlayerBody" instance=ExtResource("15_77rdj")]
+transform = Transform3D(-1.81059e-08, 0.707107, 0.707107, 6.18172e-08, -0.707107, 0.707107, 1, 5.65141e-08, -3.09086e-08, -0.3, 1.6, 0.2)
+
+[node name="Hitbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.791252, 0)
+collision_layer = 524288
+collision_mask = 8388608
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129706, 0)
+shape = SubResource("CapsuleShape3D_rdg41")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+far = 250.0
+
+[node name="LeftHand" type="XRController3D" parent="."]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
+tracker = &"left_hand"
+
+[node name="#XR_PLUGIN" type="Node3D" parent="LeftHand"]
+
+[node name="MovementDirect" parent="LeftHand/#XR_PLUGIN" instance=ExtResource("2_1ym5p")]
+
+[node name="FunctionPickup" parent="LeftHand/#XR_PLUGIN" instance=ExtResource("1_v7mbb")]
+
+[node name="LeftPhysicsHand" parent="LeftHand/#XR_PLUGIN" instance=ExtResource("3_dnfyn")]
+
+[node name="MovementClimb" parent="LeftHand/#XR_PLUGIN" instance=ExtResource("5_ap4jk")]
+
+[node name="#UI" type="Node3D" parent="LeftHand"]
+
+[node name="pause_menu" parent="LeftHand/#UI" instance=ExtResource("5_if4xl")]
+process_mode = 2
+transform = Transform3D(0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, 0, 0.266191, -0.616513)
+visible = false
+screen_size = Vector2(1280, 780)
+collision_layer = 5242880
+scene = ExtResource("6_28e5p")
+viewport_size = Vector2(1150, 650)
+unshaded = true
+scene_properties_keys = PackedStringArray()
+
+[node name="debug_menu" parent="LeftHand/#UI" instance=ExtResource("5_if4xl")]
+process_mode = 2
+transform = Transform3D(0.001, 0, 0, 0, 0.000939692, -0.00034202, 0, 0.00034202, 0.000939692, 0, 1.10581, -0.467731)
+visible = false
+screen_size = Vector2(1280, 780)
+collision_layer = 5242880
+viewport_size = Vector2(1150, 650)
+unshaded = true
+
+[node name="RightHand" type="XRController3D" parent="."]
+process_mode = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
+tracker = &"right_hand"
+
+[node name="#XR_PLUGIN" type="Node3D" parent="RightHand"]
+
+[node name="MovementTurn" parent="RightHand/#XR_PLUGIN" instance=ExtResource("4_qsoh7")]
+turn_mode = 2
+
+[node name="RightPhysicsHand" parent="RightHand/#XR_PLUGIN" instance=ExtResource("5_wcfh6")]
+
+[node name="FunctionPickup" parent="RightHand/#XR_PLUGIN" instance=ExtResource("1_v7mbb")]
+
+[node name="FunctionPointer" parent="RightHand/#XR_PLUGIN" instance=ExtResource("9_bkp5h")]
+visible = false
+show_laser = 2
+laser_length = 1
+
+[node name="#UI" type="Node3D" parent="RightHand"]
+
+[node name="HPBar" type="Sprite3D" parent="RightHand/#UI"]
+transform = Transform3D(0.126286, 0, 0.991994, 0, 1, 0, -0.991994, 0, 0.126286, 0.046626, -0.0296079, 0.226963)
+texture = SubResource("GradientTexture2D_q3mf3")
+script = ExtResource("6_ypaab")
+
+[node name="ManaBar" type="Sprite3D" parent="RightHand/#UI"]
+transform = Transform3D(0.127065, 0, 0.991894, 0, 1, 0, -0.991894, 0, 0.127065, 0.047, -0.0539044, 0.227)
+texture = SubResource("GradientTexture2D_1slp5")
+script = ExtResource("7_e8i6j")
+
+[node name="sfx_footsteps" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_ukggx")
+parameters/looping = false
+
+[connection signal="hit_by_ennemy" from="." to="RightHand/#UI/HPBar" method="_on_player_hit_by_ennemy"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_area_3d_body_exited"]
+[connection signal="button_pressed" from="LeftHand" to="." method="_on_left_hand_button_pressed"]
+[connection signal="button_released" from="LeftHand" to="." method="_on_left_hand_button_released"]
+[connection signal="button_pressed" from="RightHand" to="." method="_on_right_hand_button_pressed"]
+[connection signal="button_released" from="RightHand" to="." method="_on_right_hand_button_released"]

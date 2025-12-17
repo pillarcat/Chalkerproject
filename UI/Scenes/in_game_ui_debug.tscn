@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnyi785o8xx0p"]
+
+[ext_resource type="Script" path="res://UI/Scripts/in_game_ui_debug.gd" id="1_1gypu"]
+
+[node name="InGameDebugUI" type="Node2D"]
+process_mode = 2
+script = ExtResource("1_1gypu")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.866667, 0.219608, 0.815686, 0.356863)
+
+[node name="TitleMarginContainer" type="MarginContainer" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -303.0
+offset_right = 128.0
+offset_bottom = -266.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.64, 1.64)
+
+[node name="TitleVBoxContainer" type="VBoxContainer" parent="Control/ColorRect/TitleMarginContainer"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="Control/ColorRect/TitleMarginContainer/TitleVBoxContainer"]
+layout_mode = 2
+text = "==============================   DEBUG MENU   =============================="
+horizontal_alignment = 1
+
+[node name="DebugMarginContainer" type="MarginContainer" parent="Control/ColorRect"]
+layout_mode = 2
+offset_left = 63.0
+offset_top = 113.0
+offset_right = 1097.0
+offset_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DebugVBoxContainer" type="VBoxContainer" parent="Control/ColorRect/DebugMarginContainer"]
+layout_mode = 2
+
+[node name="content" type="Label" parent="Control/ColorRect/DebugMarginContainer/DebugVBoxContainer"]
+layout_mode = 2

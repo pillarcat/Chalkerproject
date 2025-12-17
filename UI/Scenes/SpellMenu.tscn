@@ -1,0 +1,92 @@
+[gd_scene load_steps=14 format=3 uid="uid://bj87t0ko8wnss"]
+
+[ext_resource type="Script" path="res://UI/Scripts/spell_menu.gd" id="1_5so2x"]
+[ext_resource type="AudioStream" uid="uid://behmmfyri1uny" path="res://Sounds/anouncing_spells/fireball.mp3" id="2_upkq1"]
+[ext_resource type="AudioStream" uid="uid://5fy44xok1ok" path="res://Sounds/anouncing_spells/thunder.mp3" id="3_p1hm3"]
+[ext_resource type="AudioStream" uid="uid://cvwensln1ud12" path="res://Sounds/anouncing_spells/healing.mp3" id="4_spy8t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r5xh2"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_b8woo"]
+material = SubResource("StandardMaterial3D_r5xh2")
+size = Vector3(0.25, 0.25, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sxd3s"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y803p"]
+material = SubResource("StandardMaterial3D_sxd3s")
+size = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oihps"]
+size = Vector3(0.2, 0.2, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87dl3"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_x7270"]
+material = SubResource("StandardMaterial3D_87dl3")
+size = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nn13d"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k12tp"]
+material = SubResource("StandardMaterial3D_nn13d")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="SpellMenu" type="MeshInstance3D"]
+mesh = SubResource("PrismMesh_b8woo")
+script = ExtResource("1_5so2x")
+
+[node name="Blue" type="Node3D" parent="."]
+
+[node name="BlueMesh" type="MeshInstance3D" parent="Blue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.1, 0)
+mesh = SubResource("BoxMesh_y803p")
+skeleton = NodePath("../..")
+
+[node name="BlueArea" type="Area3D" parent="Blue"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11, -0.11, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blue/BlueArea"]
+shape = SubResource("BoxShape3D_oihps")
+
+[node name="Green" type="Node3D" parent="."]
+
+[node name="GreenArea" type="Area3D" parent="Green"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Green/GreenArea"]
+shape = SubResource("BoxShape3D_oihps")
+
+[node name="GreenMesh" type="MeshInstance3D" parent="Green"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_x7270")
+skeleton = NodePath("../..")
+
+[node name="Red" type="Node3D" parent="."]
+
+[node name="RedArea" type="Area3D" parent="Red"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11, -0.11, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Red/RedArea"]
+shape = SubResource("BoxShape3D_oihps")
+
+[node name="RedMesh" type="MeshInstance3D" parent="Red"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.1, 0)
+mesh = SubResource("BoxMesh_k12tp")
+skeleton = NodePath("../..")
+
+[node name="sfx_fireball" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_upkq1")
+
+[node name="sfx_thunder" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_p1hm3")
+
+[node name="sfx_healing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_spy8t")
+
+[connection signal="area_entered" from="Blue/BlueArea" to="." method="_on_blue_area_entered"]
+[connection signal="area_entered" from="Green/GreenArea" to="." method="_on_green_area_entered"]
+[connection signal="area_entered" from="Red/RedArea" to="." method="_on_red_area_entered"]

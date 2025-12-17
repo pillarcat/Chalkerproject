@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://cwru8wjnyjiks"]
+
+[ext_resource type="Script" path="res://Levels/Test/Scripts/lever.gd" id="1_k63la"]
+[ext_resource type="PackedScene" uid="uid://b4pfldafv073g" path="res://Levels/Test/Assets/LeverBase.glb" id="1_ul1hn"]
+[ext_resource type="PackedScene" uid="uid://b5lstjedrvv3y" path="res://Levels/Test/Assets/LeverStick.glb" id="2_7hekm"]
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="4_c65sc"]
+[ext_resource type="Script" path="res://Levels/Test/Scripts/debug_pos.gd" id="5_h0ord"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mhkkf"]
+size = Vector3(0.150757, 0.07843, 0.166428)
+
+[sub_resource type="BoxMesh" id="BoxMesh_uhlme"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jb48j"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ct7ty"]
+material = SubResource("StandardMaterial3D_jb48j")
+
+[node name="Lever" type="Node3D"]
+transform = Transform3D(-1.31134e-08, 0.3, 0, -0.3, -1.31134e-08, 0, 0, 0, 0.3, 0, 0, 0)
+script = ExtResource("1_k63la")
+
+[node name="LeverBase" parent="." instance=ExtResource("1_ul1hn")]
+
+[node name="LeverStick" parent="." instance=ExtResource("2_7hekm")]
+
+[node name="GrabPoint" parent="." instance=ExtResource("4_c65sc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+gravity_scale = 0.0
+freeze = true
+release_mode = 1
+ranged_grab_method = 0
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="GrabPoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000793457, -0.0277106, -0.00122833)
+shape = SubResource("BoxShape3D_mhkkf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GrabPoint"]
+transform = Transform3D(0.166958, 0, 0, 0, 0.0822704, 0, 0, 0, 0.193925, 0, -0.024256, 0)
+visible = false
+mesh = SubResource("BoxMesh_uhlme")
+skeleton = NodePath("")
+
+[node name="DebugPos" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 8.88178e-16, 0, -8.88178e-16, 0.3, 0, 0, 0, 0.3, 8.07629e-09, 0.184764, 0.358751)
+visible = false
+mesh = SubResource("SphereMesh_ct7ty")
+script = ExtResource("5_h0ord")
+
+[connection signal="down_position" from="." to="DebugPos" method="_on_lever_down_position"]
+[connection signal="neutral_position" from="." to="DebugPos" method="_on_lever_neutral_position"]
+[connection signal="up_position" from="." to="DebugPos" method="_on_lever_up_position"]
+[connection signal="dropped" from="GrabPoint" to="." method="_on_grab_point_dropped"]

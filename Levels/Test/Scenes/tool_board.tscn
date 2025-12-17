@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://mf7sr62wde8x"]
+
+[ext_resource type="PackedScene" path="res://Items/Equipment/Weapon/Sword/Assets/sword_snap_zone.tscn" id="1_8hlv2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0u1wu"]
+size = Vector3(0.75, 1.5, 0.01)
+
+[node name="ToolBoard" type="Node3D"]
+
+[node name="Board" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+mesh = SubResource("BoxMesh_0u1wu")
+
+[node name="SwordSnapZone" parent="Board" instance=ExtResource("1_8hlv2")]
+transform = Transform3D(1, 0, 0, 0, 0.00579445, 0.999983, 0, -0.999983, 0.00579445, 0, 0, 0.219535)
